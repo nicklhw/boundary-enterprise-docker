@@ -1,0 +1,92 @@
+#------------------------------------------------------------------------------
+# General
+#------------------------------------------------------------------------------
+
+friendly_name_prefix = "hashicat"
+
+# AWS Tagging Configuration
+common_tags = {
+  deployment = "dev"
+  site       = "one"
+}
+
+
+vpc_enable_ssm = true
+
+#------------------------------------------------------------------------------
+# IAM Configuration
+#------------------------------------------------------------------------------
+iam_resources = {
+  ssm_enable = true
+  # session_recording_user = "test" # Need to create this manually if using doormat account
+}
+
+#------------------------------------------------------------------------------
+# Network Configuration
+#------------------------------------------------------------------------------
+
+route53_zone_name    = "hashicat.aws.sbx.hashicorpdemo.com"
+lb_type              = "network"
+
+route53_failover_record = {
+    record_name = "boundary"
+  }
+
+lb_sg_rules_details = {
+    boundary_api_ingress = {
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+}
+
+ssh_public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCp1/fzHU+TleDpktxwlGUfXrxnb9CXEdzwtJOJ214ncFAsyCnJQk7u9YbJ4RpZAe00utnPMbeWG2pYE14JtLSl+/4kCThzhvRBBTTYeaeY52ABbpJiRjiSSUe73iLiZuul/YmlTv8G+SozAhljSB2V9LsrWxtlFuNlw6P74xpjdV+AOmwjRCRBqVOFxxSSd2V64Zj/nuWy3vPR+IQ6R/eEKAi8aLb8Ynlg+He5tZA0RFOaqfAsXTnXo0mAYUE5iceqC43sE7Dr8PrS+VxikwqLeVyCh7bn2Rnl7ES+hdOZKgWq/SnPKN91ZElEudNFFpIjYgUsczw/Cc8ykMxLoM7aqsKItqvVzyI2pEDHjb7qAkyt0mWFNx+bbU4Jls/zVCcCwhjf+XTx79DY7Mf3Qvm2+AC7qsh329yqbZPIBd2yNuQ5BZIef38HvjAQeHsUaMrEbw7oE8LiHoJr6B/oPtcE/jNr/Bif8+ORhh4DKDNpIoYGhmdFRy5+HkQlZGvvWyM="
+#------------------------------------------------------------------------------
+# Secret Manager Configuration - Initial Boundary Secrets
+#------------------------------------------------------------------------------
+secretsmanager_secrets = {
+  boundary = {
+    license = {
+      name = "boundary-license"
+      path = "boundary.hclic"
+    }
+    db_username = {
+      data = "boundary_admin"
+    }
+    db_password = {
+      data = "thisIsntSecure123"
+    }
+  }
+  cert_pem_secret = {
+    name = "cert_pem_public"
+    path = "./supplemental-modules/generate-certs/boundary.pub"
+  }
+  cert_pem_private_key_secret = {
+    name = "cert_pem_private"
+    path = "./supplemental-modules/generate-certs/boundary.key"
+  }
+
+}
+
+#------------------------------------------------------------------------------
+# Boundary Configuration
+#------------------------------------------------------------------------------
+force_tls                 = true
+log_forwarding_enabled    = true
+session_recording_enabled = false
+
+os_distro = "ubuntu"
+
+worker_tags = {
+  public_worker = {
+    type = ["ingress"]
+  }
+  private_worker = {
+    type = ["private_worker", "backendservers", "testing"]
+  }
+}
+
+#------------------------------------------------------------------------------
+# Boundary Configuration (FOR TESTING, exclude from .example)
+#------------------------------------------------------------------------------
+boundary_account_username        = "foo"
+boundary_account_password        = "barbaz123456"
+boundary_global_account_password = "thisalsoisntsecure!"
