@@ -1,23 +1,13 @@
-TF_INFRA_SRC_DIR ?= ./terraform
+DOCKER_COMPOSE_DIR ?= ./docker-compose
+DOCKER_COMPOSE_FILE ?= $(DOCKER_COMPOSE_DIR)/docker-compose.yml
 
-.PHONY: tf-plan
-tf-plan:
-	terraform -chdir=$(TF_INFRA_SRC_DIR) init -upgrade
-	terraform -chdir=$(TF_INFRA_SRC_DIR) plan
+.PHONY: all
+all: clean up
 
-.PHONY: tf-apply
-tf-apply:
-	terraform -chdir=$(TF_INFRA_SRC_DIR) init -upgrade
-	terraform -chdir=$(TF_INFRA_SRC_DIR) apply --auto-approve
+.PHONY: up
+up:
+	docker-compose -f $(DOCKER_COMPOSE_FILE) up --detach
 
-.PHONY: tf-destroy
-tf-destroy:
-	terraform -chdir=$(TF_INFRA_SRC_DIR) destroy --auto-approve
-
-.PHONY: hcp-console
-hcp-console:
-	open https://portal.cloud.hashicorp.com
-
-.PHONY: tf-fmt
-tf-fmt:
-	terraform -chdir=$(TF_INFRA_SRC_DIR) fmt -recursive
+.PHONY: clean
+clean:
+	docker-compose -f $(DOCKER_COMPOSE_FILE) down --remove-orphans

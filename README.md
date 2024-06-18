@@ -1,4 +1,4 @@
-# Boundary Enterprise Demo
+# Boundary Enterprise Docker
 
 
 ## Quick Start
@@ -9,3 +9,5 @@
 
 
 ## Resources
+- [Boundary Enterprise Docker](https://hub.docker.com/r/hashicorp/boundary-enterprise)
+- [Boundary Reference Architecture](https://github.com/hashicorp/boundary-reference-architecture/blob/main/deployment/docker/compose/boundary.hcl)

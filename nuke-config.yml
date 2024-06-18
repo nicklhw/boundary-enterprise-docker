@@ -1,8 +1,0 @@
-regions:
-  - us-east-2
-
-account-blocklist:
-  - "999999999999" # production
-
-accounts:
-  "258559098798": {} # aws-nuke-example
