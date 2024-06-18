@@ -33,7 +33,8 @@ listener "tcp" {
 
 // Yoy can generate the keys by
 // `python3 kyegen.py`
-// Ref: https://www.boundaryproject.io/docs/configuration/kms/aead
+// Ref: https://developer.hashicorp.com/boundary/docs/configuration/kms/aead
+// https://developer.hashicorp.com/boundary/docs/concepts/security/data-encryption
 kms "aead" {
   purpose = "root"
   aead_type = "aes-gcm"

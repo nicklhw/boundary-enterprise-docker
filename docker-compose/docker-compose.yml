@@ -18,7 +18,8 @@ services:
 
   db-init:
     image: hashicorp/boundary-enterprise
-    command: ["database", "init", "-config", "/boundary/config.hcl"]
+    # https://developer.hashicorp.com/boundary/docs/commands/database/init
+    command: ["database", "init", "-skip-auth-method-creation", "-config", "/boundary/config.hcl"]
     volumes:
       - ./boundary:/boundary
     environment:
