@@ -4,6 +4,8 @@
 
 ```shell
 # setup boundary controller and worker
+export BOUNDARY_LICENSE=<your boundary enterprise license>
+
 make all
 
 # setup boundary target
