@@ -81,19 +81,9 @@ services:
         condition: service_healthy
 
   # Private Database Targets - not exposed to host network, only available via Boundary
-#  cassandra:
-#    image: bitnami/cassandra:latest
-#
-#  mysql:
-#    image: mariadb
-#    environment:
-#      - 'MYSQL_ROOT_PASSWORD=my-secret-pw'
-#
-#  redis:
-#    image: redis
-#
-#  mssql:
-#    image: mcr.microsoft.com/mssql/server:2017-CU8-ubuntu
-#    environment:
-#      - 'ACCEPT_EULA=Y'
-#      - 'SA_PASSWORD=yourStrong(!)Password'
+  ssh-target:
+    hostname: "ssh-target"
+    build:
+      dockerfile: ./ssh-target/Dockerfile
+
+
