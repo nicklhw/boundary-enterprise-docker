@@ -1,3 +1,4 @@
+# https://developer.hashicorp.com/boundary/docs/configuration/controller#complete-configuration-example
 disable_mlock = true
 
 controller {
@@ -18,7 +19,7 @@ listener "tcp" {
 }
 
 listener "tcp" {
-  address                           = "0.0.0.0:9201"
+  address                           = "boundary:9201"
   purpose                           = "cluster"
   tls_disable                       = true
 }

@@ -19,9 +19,9 @@ services:
   db-init:
     image: hashicorp/boundary-enterprise
     # https://developer.hashicorp.com/boundary/docs/commands/database/init
-    command: ["database", "init", "-skip-auth-method-creation", "-config", "/boundary/config.hcl"]
+    command: ["database", "init", "-skip-auth-method-creation", "-config", "/boundary/config/config.hcl"]
     volumes:
-      - ./boundary:/boundary
+      - ./boundary/controller/config:/boundary/config
     environment:
       - BOUNDARY_POSTGRES_URL=postgresql://postgres:postgres@db/boundary?sslmode=disable
       - BOUNDARY_LICENSE=${BOUNDARY_LICENSE}
@@ -31,19 +31,21 @@ services:
       db:
         condition: service_healthy
 
-  boundary:
+  boundary-controller:
     image: hashicorp/boundary-enterprise
     hostname: "boundary"
-    command: ["server", "-config", "/boundary/config.hcl"]
+    command: ["server", "-config", "/boundary/config/config.hcl"]
     volumes:
-      - ./boundary:/boundary
+      - ./boundary/controller/config:/boundary/config
     ports:
       - "9200:9200"
       - "9201:9201"
-      - "9202:9202"
+      - "9203:9203"
     environment:
       - BOUNDARY_POSTGRES_URL=postgresql://postgres:postgres@db:5432/boundary?sslmode=disable
       - BOUNDARY_LICENSE=${BOUNDARY_LICENSE}
+    cap_add:
+      - IPC_LOCK
     depends_on:
       db-init:
         condition: service_completed_successfully
@@ -53,6 +55,21 @@ services:
       timeout: 5s
       retries: 5
 
+  boundary-worker:
+    image: hashicorp/boundary-enterprise
+    hostname: "boundary-worker"
+    command: [ "server", "-config", "/boundary/config/config.hcl" ]
+    volumes:
+      - ./boundary/worker/config:/boundary/config
+      - ./boundary/worker/data:/boundary/data
+    ports:
+      - "9202:9202"
+    cap_add:
+      - IPC_LOCK
+    depends_on:
+      boundary-controller:
+        condition: service_healthy
+
   # Boundary controller is the last service to start and may not be fully up
   # by the time the docker compose command returns, so we force a wait by
   # depending a placeholder on the controller healthcheck
@@ -60,7 +77,7 @@ services:
     image: busybox:latest
     command: ["sleep", "1"]
     depends_on:
-      boundary:
+      boundary-controller:
         condition: service_healthy
 
   # Private Database Targets - not exposed to host network, only available via Boundary
