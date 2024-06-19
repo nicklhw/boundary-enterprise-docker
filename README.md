@@ -1,9 +1,23 @@
 # Boundary Enterprise Docker
 
-
 ## Quick Start
 
+```shell
+# setup boundary controller and worker
+make all
 
+# setup boundary target
+make tf-apply
+
+# grab the auth method id and target id from the output
+
+# authenticate to boundary
+export BOUNDARY_ADDR=http://localhost:9200
+boundary authenticate password -auth-method-id=<auth_method_id>
+
+# connect to the target
+boundary connect ssh -target-id=<target_id> -- -l <username>
+```
 
 ## Notes
 

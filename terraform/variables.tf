@@ -10,3 +10,11 @@ variable "boundary_global_admin_username" {
 variable "boundary_global_admin_password" {
   type = string
 }
+
+variable "ssh_target_username" {
+  type = string
+}
+
+variable "ssh_target_password" {
+  type = string
+}

@@ -5,6 +5,11 @@ resource "boundary_auth_method" "password" {
   scope_id    = "global"
 }
 
+resource "boundary_scope" "global" {
+  scope_id = "global"
+  pri
+}
+
 resource "boundary_account_password" "admin" {
   login_name     = var.boundary_global_admin_username
   password       = var.boundary_global_admin_password
@@ -20,10 +25,43 @@ resource "boundary_user" "admin" {
 
 resource "boundary_role" "global_admin" {
   scope_id        = "global"
-  grant_scope_ids = ["global"]
+  grant_scope_ids = ["global", boundary_scope.org.id, boundary_scope.project.id]
   grant_strings = [
     "ids=*;type=*;actions=*"
   ]
   principal_ids = [boundary_user.admin.id]
 }
 
+resource "boundary_scope" "org" {
+  scope_id = "global"
+  name     = "demo-org"
+}
+
+resource "boundary_scope" "project" {
+  scope_id = boundary_scope.org.id
+  name     = "test"
+}
+
+resource "boundary_target" "ssh_target" {
+  scope_id             = boundary_scope.project.id
+  type                 = "tcp"
+  name                 = "ubuntu-target"
+  default_port         = "22"
+  address              = "ssh-target"
+  egress_worker_filter = "\"dockerlab\" in \"/tags/type\""
+  brokered_credential_source_ids = [
+    boundary_credential_username_password.static_cred.id
+  ]
+}
+
+resource "boundary_credential_store_static" "static_cred" {
+  name     = "static_cred"
+  scope_id = boundary_scope.project.id
+}
+
+resource "boundary_credential_username_password" "static_cred" {
+  name                = "static_cred"
+  credential_store_id = boundary_credential_store_static.static_cred.id
+  username            = var.ssh_target_username
+  password            = var.ssh_target_password
+}
