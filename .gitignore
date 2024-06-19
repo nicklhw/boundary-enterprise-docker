@@ -40,3 +40,4 @@ terraform.rc
 *.temp
 
 *.hclic
+docker-compose/boundary/worker/data
