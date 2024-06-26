@@ -18,3 +18,7 @@ variable "ssh_target_username" {
 variable "ssh_target_password" {
   type = string
 }
+
+variable "worker_generated_auth_token" {
+  type = string
+}

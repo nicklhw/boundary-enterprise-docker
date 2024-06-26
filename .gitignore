@@ -41,3 +41,4 @@ terraform.rc
 
 *.hclic
 docker-compose/boundary/worker/data
+*.pem

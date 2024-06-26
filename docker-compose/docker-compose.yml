@@ -50,7 +50,7 @@ services:
       db-init:
         condition: service_completed_successfully
     healthcheck:
-      test: ["CMD", "wget", "-O-", "http://boundary:9200"]
+      test: ["CMD", "wget", "-O-", "--no-check-certificate", "https://boundary:9200"]
       interval: 3s
       timeout: 5s
       retries: 5

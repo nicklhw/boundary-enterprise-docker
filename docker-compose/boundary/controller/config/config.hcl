@@ -13,23 +13,25 @@ controller {
 listener "tcp" {
   address                           = "0.0.0.0:9200"
   purpose                           = "api"
-  tls_disable                       = true
-#  tls_cert_file = "${boundary_config_dir}/tls/boundary-cert.pem"
-#  tls_key_file  = "${boundary_config_dir}/tls/boundary-key.pem"
+  tls_disable                       = false
+  tls_cert_file = "/boundary/config/cert.pem"
+  tls_key_file  = "/boundary/config/private_key.pem"
 }
 
 listener "tcp" {
   address                           = "boundary:9201"
   purpose                           = "cluster"
-  tls_disable                       = true
+  tls_disable                       = false
+  tls_cert_file = "/boundary/config/cert.pem"
+  tls_key_file  = "/boundary/config/private_key.pem"
 }
 
 listener "tcp" {
   address                           = "0.0.0.0:9203"
   purpose                           = "ops"
-  tls_disable                       = true
-#  tls_cert_file = "${boundary_config_dir}/tls/boundary-cert.pem"
-#  tls_key_file  = "${boundary_config_dir}/tls/boundary-key.pem"
+  tls_disable                       = false
+  tls_cert_file = "/boundary/config/cert.pem"
+  tls_key_file  = "/boundary/config/private_key.pem"
 }
 
 // Yoy can generate the keys by

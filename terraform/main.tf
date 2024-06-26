@@ -7,7 +7,6 @@ resource "boundary_auth_method" "password" {
 
 resource "boundary_scope" "global" {
   scope_id = "global"
-  pri
 }
 
 resource "boundary_account_password" "admin" {
@@ -64,4 +63,11 @@ resource "boundary_credential_username_password" "static_cred" {
   credential_store_id = boundary_credential_store_static.static_cred.id
   username            = var.ssh_target_username
   password            = var.ssh_target_password
+}
+
+resource "boundary_worker" "worker_led" {
+  scope_id                    = "global"
+  name                        = "demo_worker"
+  description                 = "self managed worker with worker led auth"
+  worker_generated_auth_token = var.worker_generated_auth_token
 }
