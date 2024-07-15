@@ -86,4 +86,18 @@ services:
     build:
       dockerfile: ./ssh-target/Dockerfile
 
+  ansible:
+#    image: willhallonline/ansible:2.16.4-ubuntu-22.04
+    container_name: ansible
+    build:
+      context: ./ansible
+      args:
+        ANSIBLE_CORE_VERSION: 2.16.4
+        ANSIBLE_VERSION: 9.2.0
+        ANSIBLE_LINT: 6.22.2
+    #      dockerfile: ./ansible/Dockerfile
+    entrypoint: "tail -f /dev/null"
+
+
+
 

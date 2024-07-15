@@ -30,3 +30,4 @@ boundary connect ssh -target-id=<target_id> -- -l <username>
 - [Boundary Enterprise Docker](https://hub.docker.com/r/hashicorp/boundary-enterprise)
 - [Boundary Reference Architecture](https://github.com/hashicorp/boundary-reference-architecture/blob/main/deployment/docker/compose/boundary.hcl)
 - [How to SSH into Docker containers](https://circleci.com/blog/ssh-into-docker-container/)
+- [Automating Docker with Ansible](https://medium.com/@nr817174/automating-docker-with-ansible-a-step-by-step-guide-159a69597644)
