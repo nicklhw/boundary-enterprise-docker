@@ -49,7 +49,7 @@ resource "boundary_target" "ssh_target" {
   address              = "ssh-target"
   egress_worker_filter = "\"dockerlab\" in \"/tags/type\""
   brokered_credential_source_ids = [
-    boundary_credential_username_password.static_cred.id
+    boundary_credential_ssh_private_key.static_cred.id
   ]
 }
 
@@ -58,11 +58,18 @@ resource "boundary_credential_store_static" "static_cred" {
   scope_id = boundary_scope.project.id
 }
 
-resource "boundary_credential_username_password" "static_cred" {
-  name                = "static_cred"
-  credential_store_id = boundary_credential_store_static.static_cred.id
-  username            = var.ssh_target_username
-  password            = var.ssh_target_password
+#resource "boundary_credential_username_password" "static_cred" {
+#  name                = "static_cred"
+#  credential_store_id = boundary_credential_store_static.static_cred.id
+#  username            = var.ssh_target_username
+#  password            = var.ssh_target_password
+#}
+
+resource "boundary_credential_ssh_private_key" "static_cred" {
+  name                   = "static_cred"
+  credential_store_id    = boundary_credential_store_static.static_cred.id
+  username               = var.ssh_target_username
+  private_key            = file("~/.ssh/id_rsa") # change to valid SSH Private Key
 }
 
 resource "boundary_worker" "worker_led" {

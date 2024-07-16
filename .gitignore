@@ -42,3 +42,4 @@ terraform.rc
 *.hclic
 docker-compose/boundary/worker/data
 *.pem
+id_rsa.pub

@@ -1,0 +1,7 @@
+localhost
+
+[boundary_workers]
+boundary_worker1 ansible_host=boundary-worker
+
+[ssh_targets]
+ssh_target1 ansible_host=ssh-target

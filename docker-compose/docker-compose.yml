@@ -3,6 +3,7 @@
 
 services:
   db:
+    container_name: postgres
     image: postgres:15
     ports:
       - 5432:5432
@@ -32,6 +33,7 @@ services:
         condition: service_healthy
 
   boundary-controller:
+    container_name: boundary-controller
     image: hashicorp/boundary-enterprise
     hostname: "boundary"
     command: ["server", "-config", "/boundary/config/config.hcl"]
@@ -50,12 +52,13 @@ services:
       db-init:
         condition: service_completed_successfully
     healthcheck:
-      test: ["CMD", "wget", "-O-", "--no-check-certificate", "https://boundary:9200"]
+      test: ["CMD", "wget", "-O-", "--no-check-certificate", "http://boundary:9200"]
       interval: 3s
       timeout: 5s
       retries: 5
 
   boundary-worker:
+    container_name: boundary-worker
     image: hashicorp/boundary-enterprise
     hostname: "boundary-worker"
     command: [ "server", "-config", "/boundary/config/config.hcl" ]
@@ -82,21 +85,25 @@ services:
 
   # Private Database Targets - not exposed to host network, only available via Boundary
   ssh-target:
+    container_name: ssh-target
     hostname: "ssh-target"
     build:
-      dockerfile: ./ssh-target/Dockerfile
+      context: ./ssh-target
 
-  ansible:
-#    image: willhallonline/ansible:2.16.4-ubuntu-22.04
-    container_name: ansible
-    build:
-      context: ./ansible
-      args:
-        ANSIBLE_CORE_VERSION: 2.16.4
-        ANSIBLE_VERSION: 9.2.0
-        ANSIBLE_LINT: 6.22.2
-    #      dockerfile: ./ansible/Dockerfile
-    entrypoint: "tail -f /dev/null"
+#  ansible:
+#    container_name: ansible
+#    build:
+#      context: ./ansible
+#      args:
+#        ANSIBLE_CORE_VERSION: 2.16.4
+#        ANSIBLE_VERSION: 9.2.0
+#        ANSIBLE_LINT: 6.22.2
+#    volumes:
+#      - ./ansible/hosts:/etc/ansible/hosts
+#    environment:
+#      BOUNDARY_ADDR: https://boundary:9200
+#      BOUNDARY_TLS_INSECURE: true
+#    entrypoint: "tail -f /dev/null"
 
 
 

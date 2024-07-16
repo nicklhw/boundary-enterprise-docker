@@ -1,0 +1,6 @@
+boundary_cluster_url           = "http://localhost:9200"
+boundary_global_admin_username = "admin"
+boundary_global_admin_password = "passw0rd"
+ssh_target_username            = "root"
+ssh_target_password            = "passw0rd!"
+worker_generated_auth_token    = "GzusqckarbczHoLGQ4UA25uSQic8yqzyVCp2eqQpx1rSr5vG92xGSdEhn47Y8dzcMCBuWq1AQjPovAAcKNqsLwBNLwdydxt2TovYQJwzEfTMXTqKLLhAFN7FjkwyqUxkqm9LepBKuEasgxYJ5e3qm4mtjbfMbhoi5Y2sDRKWsyaPVdQfC5mu5oCjRNHjtprTcZwXckyB7rUm4Avb8okF4r5f8xtauHBWUzPgnZayraAv3im7xFaguHNxkv314k4boWm4ZhSR3tjyBer5GZiT7KYkG3RaPSYPPehtZ1nRXN"
