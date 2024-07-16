@@ -1,4 +1,8 @@
-# Boundary Enterprise Docker
+# Boundary Ansible Integration
+
+Ansible can use Boundary as a proxy to create a private SSH tunnel to the target machine. This can be done using the
+[ProxyCommand](https://developer.hashicorp.com/boundary/docs/concepts/connection-workflows/workflow-ssh-proxycommand) 
+in the .ssh/ssh_config file.
 
 ## Quick Start
 
@@ -6,7 +10,13 @@
 # 1. setup your SSH public key for the ssh-target
 cp ~/.ssh/id_rsa.pub ./docker-compose/ssh-target
 
-# 2. setup boundary controller and worker
+# 2. update docker-compose.yml file to point to your SSH username, i.e. SSH_USERNAME: nicholaswong
+
+# 3. update ~/.ssh/config
+Host *.boundary.lab
+  ProxyCommand sh -c "boundary connect %n -exec nc -- {{boundary.ip}} {{boundary.port}}"
+
+# 4. setup boundary controller and worker
 export BOUNDARY_LICENSE=<your boundary enterprise license>
 
 make all
@@ -22,8 +32,11 @@ make tf-apply
 export BOUNDARY_ADDR=http://localhost:9200
 boundary authenticate password -auth-method-id=<auth_method_id>
 
-# 7. connect to the target
-boundary connect ssh -target-id=<target_id>
+# 7. connect to the target with ansible
+ansible all -i ./ansible/inventory -m ping
+
+# 8. execute playbook
+ansible-playbook ./ansible/playbook.yml -i ./ansible/inventory
 ```
 
 ## Notes

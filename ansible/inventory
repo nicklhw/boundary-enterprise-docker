@@ -1,8 +1,2 @@
-[proxy]
-localhost
-
-[nodes]
-ssh-target
-
-[nodes:vars]
-ansible_ssh_common_args='boundary connect ssh -target-id=ttcp_ZnxMmH60oL'
+[boundary_targets]
+ssh-target.boundary.lab

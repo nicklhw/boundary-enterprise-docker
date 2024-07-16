@@ -78,3 +78,10 @@ resource "boundary_worker" "worker_led" {
   description                 = "self managed worker with worker led auth"
   worker_generated_auth_token = var.worker_generated_auth_token
 }
+
+resource "boundary_alias_target" "ssh_target_alias" {
+  name                      = "ssh_target_alias"
+  scope_id                  = "global"
+  value                     = "ssh-target.boundary.lab"
+  destination_id            = boundary_target.ssh_target.id
+}

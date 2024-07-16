@@ -89,6 +89,8 @@ services:
     hostname: "ssh-target"
     build:
       context: ./ssh-target
+      args:
+        SSH_USERNAME: nicholaswong
 
 #  ansible:
 #    container_name: ansible
